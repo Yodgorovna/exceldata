@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
-import defaultLayout from "../layouts/defualt.vue";
-import emptyLayout from "../layouts/empty.vue";
-import HomeView from "../views/HomeView.vue";
-import User from "../views/users/_id.vue";
-import NotFound from "../views/NotFound.vue";
+import defaultLayout from "@/layouts/defualt.vue";
+import emptyLayout from "@/layouts/empty.vue";
+import HomeView from "@/views/HomeView.vue";
+import User from "@/views/users/_id.vue";
+import NotFound from "@/views/NotFound.vue";
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -18,7 +19,7 @@ const router = createRouter({
     {
       path: "/users",
       name: "users",
-      component: () => import("../views/users/index.vue"), //for lazy load
+      component: () => import(/*for lazy load*/ "../views/users/index.vue"),
       meta: {
         layout: defaultLayout,
       },
