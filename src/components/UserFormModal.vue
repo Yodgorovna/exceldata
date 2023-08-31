@@ -15,7 +15,8 @@ const formData = ref({
     address: '',
 })
 const props = withDefaults(defineProps<IModalProps>(), {
-    openModal: false
+    openModal: false,
+    user: null
 })
 const emit = defineEmits<{
     (e: 'update:openModal', openModal: boolean): void
@@ -33,6 +34,9 @@ async function create() {
 watch(props, (newVal) => {
     console.log(newVal);
     showModal.value = newVal.openModal
+    if (newVal.user) {
+        console.log(newVal.user);
+    }
 },
     { deep: true }
 )
@@ -46,7 +50,8 @@ watch(props, (newVal) => {
                     class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                     <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                         <div>
-                            <label for="firstname" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First 
+                            <label for="firstname"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First
                                 name </label>
                             <input type="firstname" name="firstname" id="firstname" v-model="formData.firstName"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
@@ -54,7 +59,7 @@ watch(props, (newVal) => {
                         </div>
                         <div>
                             <label for="lastname" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last
-                                name  </label>
+                                name </label>
                             <input type="lastname" name="lastname" id="lastname" v-model="formData.lastName"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                 placeholder="Last name" required>
@@ -74,9 +79,11 @@ watch(props, (newVal) => {
                                 placeholder="01.01.2023" required>
                         </div>
                         <div>
-                            <label for="passportserianumber" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Passport seria
+                            <label for="passportserianumber"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Passport seria
                                 number</label>
-                            <input type="passportserianumber" name="passportserianumber" id="passportserianumber" v-model="formData.passportSeriaNumber"
+                            <input type="passportserianumber" name="passportserianumber" id="passportserianumber"
+                                v-model="formData.passportSeriaNumber"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                                 placeholder="AA1234567" required>
                         </div>

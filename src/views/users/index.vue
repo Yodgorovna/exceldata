@@ -5,6 +5,7 @@ import UserTable from '@/components/UserTable.vue';
 import UserFormModal from '@/components/UserFormModal.vue';
 const userStore = useUsersStore()
 const openModal = ref(false)
+const user = ref({})
 
 
 
@@ -39,6 +40,12 @@ function toggleModal() {
   openModal.value = !openModal.value
 }
 
+function setUser(arg: object) {
+  console.log({ arg });
+
+  user.value = arg
+}
+
 // hooks
 onMounted(async () => {
   await fetchData()
@@ -59,7 +66,7 @@ onMounted(async () => {
         Download
       </download-excel>
     </div>
-    <UserTable :fields="json_fields" :data="userStore.getUsers" />
-  </div>
-  <UserFormModal v-model:open-modal="openModal" />
+    <UserTable :fields="json_fields" :data="userStore.getUsers" @set-user="setUser" />
+  </div>{{ user }}
+  <UserFormModal v-model:open-modal="openModal" :user="user" />
 </template>

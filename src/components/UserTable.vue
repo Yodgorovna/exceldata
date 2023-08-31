@@ -1,5 +1,24 @@
 <script setup lang="ts">
+import IconDelete from './icons/IconDelete.vue';
+import IconEdit from './icons/IconEdit.vue';
 defineProps(["fields", "data"])
+const emit = defineEmits<{
+    (e: 'setUser', data: object): void
+    (e: 'openDeleteModal'): void
+}>()
+
+//functions
+function openDelete() {
+    emit('openDeleteModal')
+}
+
+function sendUser(user: object) {
+    console.log({user});
+    
+    emit('setUser', user)
+}
+
+
 </script>
 <template>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -26,9 +45,17 @@ defineProps(["fields", "data"])
                     <td class="px-6 py-3"> {{ user.district }}</td>
                     <td class="px-6 py-3"> {{ user.address }}</td>
                     <td class="px-6 py-4">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                        <button type="button" @click="sendUser(user)"
+                            class="w-12 cursor-pointer text-center border rounded-lg px-2.5 py-2 border-blue-500 active:border-blue-800"
+                            style="margin-left:auto;">
+                            <IconEdit />
+                        </button>
+                        <button type="button"
+                            class="w-12 cursor-pointer text-center border rounded-lg px-2.5 py-2 border-blue-500 active:border-blue-800"
+                            style="margin-left:auto;" @click="openDelete">
+                            <IconDelete />
+                        </button>
                     </td>
-
                 </tr>
             </tbody>
         </table>

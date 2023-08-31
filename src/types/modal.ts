@@ -1,3 +1,5 @@
 export interface IModalProps {
-    openModal: boolean
+    openModal: boolean,
+    id?: number | null
+    user?: object | null
 } 
