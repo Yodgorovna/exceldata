@@ -1,34 +1,24 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { useUsersStore } from '@/store/userStore'
+import UserTable from '@/components/UserTable.vue';
+import UserFormModal from '@/components/UserFormModal.vue';
+const userStore = useUsersStore()
+const openModal = ref(false)
+
+
 
 const json_fields = ref({
   id: "#",
-  name: "Complete name",
-  city: "City",
-  country: "Country",
+  firstName: "Firstname",
+  lastName: "lastName",
+  phoneNumber: "phoneNumber",
   birthdate: "Birth Date",
-  phone: "Telephone",
+  passportSeriaNumber: "passportSeriaNumber",
+  region: "region",
+  district: "district",
+  address: "address",
 })
-const json_data = ref([
-  {
-    id: 1,
-    name: "Tony Peña",
-    city: "New York",
-    country: "United States",
-    birthdate: "1978-03-15",
-    phone:
-      "1-541-754-3010",
-
-  },
-  {
-    id: 2,
-    name: "Thessaloniki",
-    city: "Athens",
-    country: "Greece",
-    birthdate: "1987-11-23",
-    phone: "+1 855 275 5071"
-  },
-])
 const json_meta = ref([
   [
     {
@@ -40,31 +30,36 @@ const json_meta = ref([
 
 
 
+// functions
+async function fetchData(page: number = 1) {
+  await userStore.fetchUsers(page)
+};
+
+function toggleModal() {
+  openModal.value = !openModal.value
+}
+
+// hooks
+onMounted(async () => {
+  await fetchData()
+})
+
 </script>
 <template>
-  <table>
-    <thead>
-      <tr>
-        <th v-for="field in json_fields" :key="field">{{ field }}</th>
-      </tr>
-      head uchun ishlatilgan dieldlarni teskari tartibda olarkan faqar keyin buni importida sal boshqacha boldi ctrl+z qilib korsangiz ham boaldi shu kodni olib qoying avval bopti men uxladim
-    </thead>
-    <tbody>
-      <tr>
-        <template v-for="item in json_data" :key="item.id">
-          <td>{{ item.id }}</td>
-          <td>{{ item.name }}</td>
-          <td>{{ item.city }}</td>
-          <td>{{ item.country }}</td>
-          <td>{{ item.birthdate }}</td>
-          <td>{{ item.phone }}</td>
-        </template>
-      </tr>
-    </tbody>
-  </table>
-  <download-excel
-    class="w-36 cursor-pointer text-center border rounded-lg px-2.5 py-2 border-blue-500 active:border-blue-800"
-    :meta="json_meta" :data="json_data" :fields="json_fields" worksheet="My Worksheet" name="filename.xls">
-    Download
-  </download-excel>
+  <div class="p-10 sm:ml-5">
+    <div class="flex items-center gap-3 mb-3">
+      <button @click="toggleModal"
+        class="w-36 cursor-pointer text-center border rounded-lg px-2.5 py-2 border-blue-500 active:border-blue-800"
+        style="margin-left:auto;">
+        Create
+      </button>
+      <download-excel
+        class="w-36 cursor-pointer text-center border rounded-lg px-2.5 py-2 border-blue-500 active:border-blue-800"
+        :meta="json_meta" :data="userStore.getUsers" :fields="json_fields" worksheet="My Worksheet" name="filename.xls">
+        Download
+      </download-excel>
+    </div>
+    <UserTable :fields="json_fields" :data="userStore.getUsers" />
+  </div>
+  <UserFormModal v-model:open-modal="openModal" />
 </template>
