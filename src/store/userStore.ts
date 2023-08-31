@@ -58,8 +58,7 @@ export const useUsersStore = defineStore("user", () => {
     // edit user
     async function editUser(id: number) {
         try {
-            const res: any = await api.get(`/users/${id}`, {
-            })
+            const res: any = await api.get(`/users/${id}`)
             user.value = res
         } catch (error) {
             console.log({ error });

@@ -10,11 +10,11 @@ const user = ref({})
 
 
 const json_fields = ref({
-  id: "#",
-  firstName: "Firstname",
+  id: "id",
+  firstName: "firstName",
   lastName: "lastName",
   phoneNumber: "phoneNumber",
-  birthdate: "Birth Date",
+  birthdate: "birthDate",
   passportSeriaNumber: "passportSeriaNumber",
   region: "region",
   district: "district",
@@ -48,7 +48,7 @@ function setUser(arg: object) {
 
 // hooks
 onMounted(async () => {
-  await fetchData()
+  await fetchData(),
 })
 
 </script>
