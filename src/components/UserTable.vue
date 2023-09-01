@@ -1,21 +1,20 @@
 <script setup lang="ts">
+import { IUser } from '@/types/user';
 import IconDelete from './icons/IconDelete.vue';
 import IconEdit from './icons/IconEdit.vue';
 defineProps(["fields", "data"])
 const emit = defineEmits<{
-    (e: 'setUser', data: object): void
-    (e: 'openDeleteModal'): void
+    (e: 'openDeleteModal', id: number): void
+    (e: 'edit', data: IUser): void
 }>()
 
 //functions
-function openDelete() {
-    emit('openDeleteModal')
+function openDelete(id: number) {
+    emit('openDeleteModal', id)
 }
 
-function sendUser(user: object) {
-    console.log({user});
-    
-    emit('setUser', user)
+function editUser(user: IUser) {
+   emit('edit', user)
 }
 
 
@@ -45,14 +44,14 @@ function sendUser(user: object) {
                     <td class="px-6 py-3"> {{ user.district }}</td>
                     <td class="px-6 py-3"> {{ user.address }}</td>
                     <td class="px-6 py-4">
-                        <button type="button" @click="sendUser(user)"
+                        <button type="button" @click="editUser(user)"
                             class="w-12 cursor-pointer text-center border rounded-lg px-2.5 py-2 border-blue-500 active:border-blue-800"
                             style="margin-left:auto;">
                             <IconEdit />
                         </button>
                         <button type="button"
                             class="w-12 cursor-pointer text-center border rounded-lg px-2.5 py-2 border-blue-500 active:border-blue-800"
-                            style="margin-left:auto;" @click="openDelete">
+                            style="margin-left:auto;" @click="openDelete(user.id)">
                             <IconDelete />
                         </button>
                     </td>

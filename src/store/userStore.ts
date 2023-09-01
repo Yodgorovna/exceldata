@@ -30,6 +30,10 @@ export const useUsersStore = defineStore("user", () => {
         }
     }
 
+    function getUserById(id: number) {
+        return users.value.find(user => user.id ===  id);
+    }
+    
     // create user
     async function createUser(user: object) {
         try {
@@ -56,9 +60,14 @@ export const useUsersStore = defineStore("user", () => {
     }
 
     // edit user
-    async function editUser(id: number) {
+    async function editUser(id: number, data: Record<string, string | number>) {
         try {
-            const res: any = await api.get(`/users/${id}`)
+            console.log(data);  
+            const formdata = new FormData();
+            for (let item in Object.entries(data)) {
+                formdata.append(item[0], item[1]);
+            }
+            const res: any = await api.put(`/users/${id}`)
             user.value = res
         } catch (error) {
             console.log({ error });
@@ -78,7 +87,7 @@ export const useUsersStore = defineStore("user", () => {
         }
     }
 
-    return { users, getUsers, fetchUsers, createUser, fetchUser, editUser, deleteUser };
+    return { users, getUsers, getUserById,  fetchUsers, createUser, fetchUser, editUser, deleteUser };
 });
 
 

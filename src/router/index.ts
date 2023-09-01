@@ -19,7 +19,10 @@ const router = createRouter({
     {
       path: "/users",
       name: "users",
-      component: () => import(/*for lazy load*/ "../views/users/index.vue"),
+      components: {
+        default: () => import(/*for lazy load*/ "../views/users/index.vue"),
+        modal: () => import("@/components/DeleteModal.vue"),
+      },
       meta: {
         layout: defaultLayout,
       },

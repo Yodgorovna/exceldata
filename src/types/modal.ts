@@ -1,5 +1,7 @@
+import { IUser } from "./user";
+
 export interface IModalProps {
-    openModal: boolean,
-    id?: number | null
-    user?: object | null
+    openModal: boolean;
+    id?: number;
+    user?: IUser | null;
 } 

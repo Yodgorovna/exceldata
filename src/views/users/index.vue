@@ -1,13 +1,18 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useUsersStore } from '@/store/userStore'
 import UserTable from '@/components/UserTable.vue';
 import UserFormModal from '@/components/UserFormModal.vue';
+import EditModal from '@/components/EditModal.vue';
+import deletemodal from '@/components/DeleteModal.vue';
+import { IUser } from '@/types/user';
 const userStore = useUsersStore()
 const openModal = ref(false)
-const user = ref({})
+const show_delete_modal = ref(false)
+const showEdit = ref(false)
 
-
+const user = ref<IUser>()
+const delete_id = ref<number>()
 
 const json_fields = ref({
   id: "id",
@@ -29,8 +34,6 @@ const json_meta = ref([
   ],
 ])
 
-
-
 // functions
 async function fetchData(page: number = 1) {
   await userStore.fetchUsers(page)
@@ -40,15 +43,24 @@ function toggleModal() {
   openModal.value = !openModal.value
 }
 
-function setUser(arg: object) {
-  console.log({ arg });
-
-  user.value = arg
+function editHandler(arg: IUser) {
+  console.log(arg);
+  showEdit.value = true;
+  user.value = arg;
 }
+
+function deleteHandler(id: number) {
+  delete_id.value = id;
+  show_delete_modal.value = true;
+}
+
+watch(showEdit, (val) => {
+  console.log(val);
+})
 
 // hooks
 onMounted(async () => {
-  await fetchData(),
+  await fetchData()
 })
 
 </script>
@@ -66,7 +78,9 @@ onMounted(async () => {
         Download
       </download-excel>
     </div>
-    <UserTable :fields="json_fields" :data="userStore.getUsers" @set-user="setUser" />
-  </div>{{ user }}
-  <UserFormModal v-model:open-modal="openModal" :user="user" />
+    <UserTable :fields="json_fields" :data="userStore.getUsers" @openDeleteModal="deleteHandler" @edit="editHandler" />
+  </div>
+  <EditModal v-model:open-modal="showEdit" :user="user" />
+  <UserFormModal v-model:open-modal="openModal" />
+  <deletemodal v-model:open-modal="show_delete_modal" :id="delete_id" />
 </template>

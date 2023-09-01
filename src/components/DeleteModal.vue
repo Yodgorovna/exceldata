@@ -1,14 +1,13 @@
-<script lang="ts">
-import { ref, watch } from 'vue';
+<script setup lang="ts">
 import { IModalProps } from "@/types/modal"
 import { useUsersStore } from '@/store/userStore';
 const userStore = useUsersStore()
-const showModal = ref(false)
-const userId = ref<number | null>(null)
 const props = withDefaults(defineProps<IModalProps>(), {
     openModal: false,
     id: null
 })
+
+console.log(props.id);
 const emit = defineEmits<{
     (e: 'update:openModal', openModal: boolean): void
 }>()
@@ -18,23 +17,25 @@ function closeModal() {
     emit("update:openModal", false)
 }
 async function deleteConfirm() {
-    await userStore.deleteUser(userId.value)
+    console.log(props.id, "Deleteing")
+    await userStore.deleteUser(props.id)
+    await userStore.fetchUsers(1)  
     closeModal()
 }
 
 // hooks
-watch(props, (newVal) => {
+/*watch(props, (newVal) => {
     showModal.value = newVal.openModal
     if (props.id) {
         userId.value = newVal.id
     }
 },
     { deep: true }
-)
+)*/
 
 </script>
 <template>
-    <form class="relative z-10" @submit.prevent="deleteConfirm">
+    <form v-if="openModal" class="relative z-10" @submit.prevent="deleteConfirm">
 
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
