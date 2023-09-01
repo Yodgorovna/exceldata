@@ -65,7 +65,7 @@ export const useUsersStore = defineStore("user", () => {
             console.log(data);  
             const formdata = new FormData();
             for (let item in Object.entries(data)) {
-                formdata.append(item[0], item[1]);
+                formdata.append(item[0], item[1]    );
             }
             const res: any = await api.put(`/users/${id}`)
             user.value = res

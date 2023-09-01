@@ -32,7 +32,7 @@ async function edit() {
 }
 </script>
 <template>
-    <form v-if="openModal" class="relative z-10" @submit.pevent="edit">
+    <form v-if="openModal" class="relative z-10" @submit.prevent="edit">
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
         <div class="fixed inset-0 z-10 overflow-y-auto">
             <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -106,7 +106,6 @@ async function edit() {
                             @click="closeModal">Close</button>
                         <button type="submit"
                             class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Submit</button>
-
                     </div>
                 </div>
             </div>

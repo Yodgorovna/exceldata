@@ -34,6 +34,7 @@ const json_meta = ref([
   ],
 ])
 
+
 // functions
 async function fetchData(page: number = 1) {
   await userStore.fetchUsers(page)
@@ -44,7 +45,6 @@ function toggleModal() {
 }
 
 function editHandler(arg: IUser) {
-  console.log(arg);
   showEdit.value = true;
   user.value = arg;
 }
@@ -81,6 +81,6 @@ onMounted(async () => {
     <UserTable :fields="json_fields" :data="userStore.getUsers" @openDeleteModal="deleteHandler" @edit="editHandler" />
   </div>
   <EditModal v-model:open-modal="showEdit" :user="user" />
-  <UserFormModal v-model:open-modal="openModal" />
+  <UserFormModal v-model:open-modal="openModal" :user="user" />
   <deletemodal v-model:open-modal="show_delete_modal" :id="delete_id" />
 </template>
