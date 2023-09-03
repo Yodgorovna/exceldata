@@ -54,8 +54,12 @@ function deleteHandler(id: number) {
   show_delete_modal.value = true;
 }
 
+
+
+
 watch(showEdit, (val) => {
   console.log(val);
+
 })
 
 // hooks

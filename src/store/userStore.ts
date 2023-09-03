@@ -1,5 +1,7 @@
 import api from "@/api/axios";
 import { IUser } from "@/types/user";
+import axios from "axios";
+import { log } from "console";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
@@ -58,22 +60,27 @@ export const useUsersStore = defineStore("user", () => {
 
         }
     }
-
-    // edit user
+    // edit user  
     async function editUser(id: number, data: Record<string, string | number>) {
         try {
-            console.log(data);  
+            console.log("data");
+            console.log(data);
+    
             const formdata = new FormData();
-            for (let item in Object.entries(data)) {
-                formdata.append(item[0], item[1]    );
+            for (const [key, value] of Object.entries(data)) {
+                formdata.append(key, value.toString());
             }
-            const res: any = await api.put(`/users/${id}`)
-            user.value = res
+            console.log("put worked");
+            console.log(formdata);
+    
+            const res: any = await api.put(`/users/${id}`, formdata);
+            user.value = res;
+            console.log(res);
         } catch (error) {
             console.log({ error });
-
         }
     }
+    
 
     // user delete
     async function deleteUser(id: number) {

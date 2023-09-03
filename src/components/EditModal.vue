@@ -10,7 +10,27 @@ const props = withDefaults(defineProps<IModalProps>(), {
     user: null
 })
 
-const formData = ref({ ...props.user })
+// const formData = ref({
+//     firstName: '',
+//     lastName: '',
+//     phoneNumber: '',
+//     birthDate: '',
+//     passportSeriaNumber: '',
+//     region: '',
+//     district: '',
+//     address: '',
+// })
+const formData = ref({
+    firstName: props.user ? props.user.firstName : '',
+    lastName: props.user ? props.user.lastName : '',
+    phoneNumber: props.user ? props.user.phoneNumber : '',
+    birthDate: props.user ? formatBirthDate(props.user.birthDate) : '',
+    passportSeriaNumber: props.user ? props.user.passportSeriaNumber : '',
+    region: props.user ? props.user.region : '',
+    district: props.user ? props.user.district : '',
+    address: props.user ? props.user.address : '',
+})
+
 
 const emit = defineEmits<{
     (e: 'update:openModal', openModal: boolean): void
@@ -26,10 +46,27 @@ watch(props, (value) => {
 function closeModal() {
     emit("update:openModal", false)
 }
-async function edit() {
-    await userStore.editUser(props?.user?.id, formData.value);
-    closeModal()
+
+function formatBirthDate(birthDate) {
+    if (!birthDate) return '';
+    const date = new Date(birthDate);
+    const year = date.getFullYear();
+    let month = (date.getMonth() + 1).toString().padStart(2, '0'); // Add leading zero if necessary
+    let day = date.getDate().toString().padStart(2, '0'); // Add leading zero if necessary
+    return `${year}-${month}-${day}`;
 }
+// async function edit() {
+//     await userStore.editUser(props?.user?.id, formData.value);
+//     closeModal()
+// }
+async function edit() {
+    const userId = props.user ? props.user.id : null;
+    if (userId) {
+        await userStore.editUser(userId, formData.value);
+        closeModal();
+    }
+}
+
 </script>
 <template>
     <form v-if="openModal" class="relative z-10" @submit.prevent="edit">
